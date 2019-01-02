@@ -1,7 +1,7 @@
 #include "bt.h"
 #include "esp_gap_ble_api.h"
 
-static const uint8_t HWID[5] = {0x01, 0x1a, 0x12, 0x3f, 0x06};// LINE 011a123a0c = HOME // 011a123f06 = YMC2018
+static const uint8_t HWID[5] = {0xff, 0xff, 0xff, 0xff, 0xff};// ผูก Hardware ID
 static const uint8_t ADC_PIN = 35;  // 電圧入力ピン
 static const float R1 = 4000.0;
 static const float R2 = 2000.0;
@@ -135,7 +135,6 @@ static esp_vhci_host_callback_t vhciHostCallback = {
 };
 
 
-
 void setup() {
   Serial.begin(115200, SERIAL_8N1);
 
@@ -146,6 +145,7 @@ void setup() {
   // bluetoothを初期化
   btStart();
   esp_vhci_host_register_callback(&vhciHostCallback);
+  esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_ADV, ESP_PWR_LVL_N12); //ตั้งค่า Range ของ LINE Simple Beacon
   enableBluetoothAdvertising();
 }
 
@@ -160,7 +160,7 @@ void loop() {
   Serial.printf("analogRead: %d,  voltage: %f", analog12bit, voltage);
   Serial.println();
 
-  char dm[] = "binahead.com"; //Device Message ที่ต้องการส่งต้องไม่เกิน 13 ตัวอักษร (ความยาวรวม 14 byte)
+  char dm[] = "Hello World";
   int dm_size = sizeof(dm) / sizeof(dm[0]);;
   Serial.println(dm_size);
   updateSimpleBeaconDeviceMessage(dm, dm_size);
