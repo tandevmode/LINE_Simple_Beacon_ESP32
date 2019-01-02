@@ -145,7 +145,6 @@ void setup() {
   // bluetoothを初期化
   btStart();
   esp_vhci_host_register_callback(&vhciHostCallback);
-  esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_ADV, ESP_PWR_LVL_N12); //ตั้งค่า Range ของ LINE Simple Beacon
   enableBluetoothAdvertising();
 }
 
